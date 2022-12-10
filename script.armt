@@ -1,6 +1,0 @@
-
-out int
-add 1
-if int != 10 6
-nex
-jmp 1

@@ -8,8 +8,6 @@ with open("config.json", 'r') as c:
 with open(config["script"] + ".armt", "r") as f:
   cmd = f.read()
 
-outs = []
-
 acc = ""
 Int = 0
 
@@ -20,6 +18,8 @@ lineNum = 0
 lines = cmd.split("\n")
 
 vars = {}
+
+dnrl = []
 
 #libVars = {}
 
@@ -115,6 +115,10 @@ def mul(n):
     print(f"ERROR ({lineNum + 1}): Tried to convert string to int. Mul command takes int")
     exit()
 
+def dnr(l):
+  global dnrl
+  dnrl.append(int(l)-1)
+
 def div(n):
   global Int
   if n in vars:
@@ -208,8 +212,13 @@ def run(l):
     cmds[a[0]][0](a[1], a[2], a[3])
   if cmds[a[0]][1] == 4:
     cmds[a[0]][0](a[1], a[2], a[3], a[4])
+
+def dnrr(l):
+  global dnrl
+  if int(l)-1 in dnrl:
+    dnrl.remove(int(l)-1)
   
-cmds = {"out" : [out, 1], "reg" : [var, 2], "add" : [add, 1], "sub" : [sub, 1], "mul" : [mul, 1], "div" : [div, 1], "if" : [If, 4], "nex" : [nex, 0], "" : [noOp, 0], "noop" : [noOp, 0], "#" : [noOp, 0], "jmp" : [jmp, 1], "wait" : [delay, 1], "var" : [Var, 3]}
+cmds = {"out" : [out, 1], "reg" : [var, 2], "add" : [add, 1], "sub" : [sub, 1], "mul" : [mul, 1], "div" : [div, 1], "if" : [If, 4], "nex" : [nex, 0], "" : [noOp, 0], "noop" : [noOp, 0], "#" : [noOp, 0], "jmp" : [jmp, 1], "wait" : [delay, 1], "var" : [Var, 3], "dnr" : [dnr, 1], "dnrr": [dnrr, 1]}
 
 for m in config["libraries"]:
   mc = importlib.import_module(m)
@@ -225,11 +234,8 @@ while True:
   if nextL:
     nextL = False
   else:
-    run(lines[lineNum])
+    if lineNum not in dnrl:
+      run(lines[lineNum])
 
   
   lineNum += 1
-  
-
-for i in outs:
-  print(i)

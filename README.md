@@ -28,6 +28,14 @@ It is very easy. Just put the python file in the same folder as the compiler. Go
     out int
     jmp 1
 
+### Counting to 10
+    # This script counts to 10
+    out int
+    add 1
+    if int != 10 6
+    nex
+    jmp 1
+    
 ## All Commands
 ### out s
 Output s
